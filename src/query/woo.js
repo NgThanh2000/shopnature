@@ -14,6 +14,9 @@ const Woocommerce = {
   getCategories: () => {
     return makeRequest("/wc/v3/products/categories");
   },
+  getTags: () => {
+    return makeRequest("/wc/v3/products/tags");
+  },
   getProductByID: id => {
     return makeRequest("/wc/v3/products/" + id);
   }

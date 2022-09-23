@@ -6,36 +6,41 @@ import Footer from "./component/footer";
 import {
   Routes,
   Route,
-
 } from "react-router-dom";
-
-import AddToCard from './component/addToCard/addToCard';
+import { useEffect} from 'react'
+import Cart from './component/cart';
+import CheckOut from './component/checkout';
 import DetailProduct from './component/detailProduct';
+import Scroll from "./component/scrollto";
 import Nopage from './component/nopage';
 
-
-import Description from './component/sub_detailProduct/description';
-import Info from './component/sub_detailProduct/info';
-import Review from './component/sub_detailProduct/review';
+import About from './component/ourStore/about';
+import Product from './component/ourStore/product';
+import CatePage from './component/ourStore/catepage';
+import Whitlist from "./component/ourStore/whislist";
 function App() {
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
-  
     <div className="App">
       <Header />
         <Routes>
-            <Route path="" element={<Home />} />
-            <Route path="/addToCard" element={<AddToCard />} />
-            <Route path="*" element={<Nopage />} />
-            <Route path ="/:name/:id" element={<DetailProduct />}/>
-            {/* <Route path='/des' element={<Description/>} />
-            <Route path='/info' element={<Info/>} />
-            <Route path ='/review' element={<Review/>}/> */}
+          <Route path="" element={<Home />} />
+          <Route path="ABOUT%20US" element={<About />} />
+          <Route path="CATEGORIES" element={<CatePage />} />
+          <Route path="PRODUCTS" element={<Product />} />
+          <Route path="WISHLIST" element={<Whitlist />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="*" element={<Nopage />} />
+          <Route path ="/:name/:id" element={<DetailProduct />}/>
+          <Route path="/checkout" element={<CheckOut />} />
         </Routes>
+        <Scroll />
       <Footer />  
     </div>
-
   );
 }
 export default App;

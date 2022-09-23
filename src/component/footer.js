@@ -1,7 +1,9 @@
 import React from 'react';
 import { useState,useEffect } from "react";
 import { connect } from 'react-redux';
+import layder from '../acsses/img/layer.jpg'
 import Sliderr from './slider';
+import SocialIcon from './socialIcon'
 function Footer(){
     const [value,setValue] = useState([])
   
@@ -16,12 +18,20 @@ function Footer(){
         <div className='footer'>
             <Sliderr />
             <div >
-                {value.map((value, i) =>(
-                    <div key={i} className='menuFooter'>
-                        <h2 >{value.post_title}</h2> 
-                        <span>|</span>
-                    </div>                  
-                ))}
+                <img className='layder' src={layder} alt='layder'/>  
+                <div className='menuF'>
+                    <div className='copyright'>
+                        <p>© Copyright  <span>CodexThemes</span></p>
+                    </div>
+                    <div className='menuFF'>
+                        {value.map((value, i) =>(
+                            <div key={i} className='menuFooter'>
+                                <h2><a href='#/'>{value.post_title}</a></h2> 
+                            </div>                  
+                        ))}
+                    </div>
+                    <SocialIcon />
+                </div>           
             </div>              
         </div>
     )

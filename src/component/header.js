@@ -1,26 +1,33 @@
 import React from 'react';
 import Logo from "./logo";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 // import {useDispatch, useSelector} from 'react-redux';
-import {getMenu} from '../actions/actions';
+
+import SocialIcon from './socialIcon';
+import MenuIcon from './menuIcon';
 
 function Header(props){
-    // const dispatch =useDispatch();
-    // const menu =useSelector(state => state.finishMenu)
 
-    useEffect(() =>{
-        props.dispatchMenu()
-    },[])
+    const [value,setValue] = useState([])
+    useEffect(()=>{
+        fetch('http://localhost/ShopNature/wp-json/wp/v2/menu',{}).then(response => response.json())
+        .then(data => setValue(data))
+        .then(value)
+      },[]);
     return(
         <div className='header'>
-            <Logo/>
+            <div className='up_header'>
+                <SocialIcon/>
+                <Logo/>
+                <MenuIcon/>
+            </div>
             <div className='in_header'>
-                {props.finish.map((menuItem,i)=>(
-                    <div key={i} className='menu'>
-                        <Link to="{menuItem.post_title}">{menuItem.post_title}</Link>
-                    </div>           
+                {value.map((v, i)=>(
+                    <Link to={`${v.post_title}`} key={i}>
+                       <h4 key={i}>{v.post_title}</h4> 
+                    </Link> 
                 ))}
             </div>         
         </div>
@@ -28,9 +35,9 @@ function Header(props){
 }
 const mapDispatchToProps =( dispatch ) =>{
     return{
-        dispatchMenu:(data) =>{
-            dispatch(getMenu(data))
-        }
+        // dispatchMenu:(data) =>{
+        //     dispatch(getMenu(data))
+        // }
     }
 }
 const mapStateToProps = (state) => {

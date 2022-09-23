@@ -4,32 +4,36 @@ import {
   } from "react-router-dom";
 import { useState,useEffect } from "react";
 import { connect } from 'react-redux';
-import { actGetDaTaWoo } from '../actions/actions';
+import { actGetDaTaWoo,actAddToCart } from '../actions/actions';
 import Woocommerce from '../query/woo';
 import Rating from '@mui/material/Rating';
-
+// import UooProduct from './uooproduct'
 function Uoo(props){
-   
+    //console.log(props.finishDaTaWoo)
     // console.log(Woocommerce.getCategories());
-    // console.log(props.finishDaTaWoo);
-
+ 
     const [product, setProducts] = useState([]);
-    // const dispatch = useDispatch();
+
+    const [postPerPage, setPostPerPage] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+    // const [isLoading, setLoading] = useState(true);
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPost = product.slice(indexOfFirstPost, indexOfLastPost);
+
+    console.log(currentPost);
     useEffect(() => {
         Woocommerce.getProducts().then(function(response) {
             setProducts(response.data);
-            //console.log(response.data);
-            // if(response.data != null) {
-               props.dispatchProduct(response.data);   
-            // }   
-            // dispatch(actGetDaTaWoo(response.data))
+            props.dispatchProduct(response.data);   
         });
     }, []);
+    
+    if(product.length>0){
     return(
-        <>
         <div className='uoo'>
             <div className='in_uoo'>
-                {product.map((value, i) =>(
+                {currentPost.map((value, i) =>(
                     <div key={i} className='product_uoo'>
                         <Link to={`/${value.name}/${value.id}`}>
                             <img src={value.images[0].src} alt={value.slug}/> 
@@ -38,18 +42,28 @@ function Uoo(props){
                             <h3>{value.name}</h3>
                             <p>$ {value.price}</p>
                         </Link>
-                        <button>ADD TO CARD</button>
+                        <button onClick={()=>props.addtocart(value)}>ADD TO CARD</button>
                     </div>                  
                 ))}           
-            </div>                
+            </div>
+            <div className='divbtshowmore'>
+                <button type="button" onClick={() => setPostPerPage(postPerPage + 5)} className="btnsm">SHOW MORE PRODUCT</button> 
+            </div>               
         </div>
-        </>
+    )}
+    return(
+       <div className='loading'>
+            <div className="lds-dual-ring"></div>
+       </div>
     )
 }
 const mapDispatchToProps=(dispatch) =>{
     return{
         dispatchProduct:(data) => {
             dispatch(actGetDaTaWoo(data))
+        },
+        addtocart:(item) =>{
+            dispatch(actAddToCart(item))
         }
     }
 }
